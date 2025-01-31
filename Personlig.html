@@ -3,70 +3,78 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Økonomioversikt</title>
+  <title>Årsoversikt</title>
   <link rel="stylesheet" href="personlig.css">
 </head>
 
 <body>
-
-  <!-- Wrapper for side om side layout -->
-  <div class="outer-container">
-    
-    <!-- Venstre container: Skjema og pai-diagram -->
-    <div class="container">
+  <div class="container">
+    <div class="left">
       <h1>Min økonomi</h1>
 
-      <label for="monthSelect">Velg måned:</label>
-      <select id="monthSelect">
-        <option value="jan">Januar</option>
-        <option value="feb">Februar</option>
-        <option value="mar">Mars</option>
-        <option value="apr">April</option>
-        <option value="mai">Mai</option>
-        <option value="jun">Juni</option>
-        <option value="jul">Juli</option>
-        <option value="aug">August</option>
-        <option value="sep">September</option>
-        <option value="okt">Oktober</option>
-        <option value="nov">November</option>
-        <option value="des">Desember</option>
-      </select>
+      <div class="section">
+        <label for="monthSelect"></label>
+        <select id="monthSelect">
+          <option value="jan">Januar</option>
+          <option value="feb">Februar</option>
+          <option value="mar">Mars</option>
+          <option value="apr">April</option>
+          <option value="mai">Mai</option>
+          <option value="jun">Juni</option>
+          <option value="jul">Juli</option>
+          <option value="aug">August</option>
+          <option value="sep">September</option>
+          <option value="okt">Oktober</option>
+          <option value="nov">November</option>
+          <option value="des">Desember</option>
+        </select>
+      </div>
+      
+      <div class="section">
+        <h2 id="monthHeading">Inntekt</h2>
+        <label for="loenn"></label>
+        <input type="number" id="loenn" placeholder="Skriv inn din inntekt">
+      </div>
+      
+      <div class="section">
+        <h2>Utgifter</h2>
+        <label for="mat">Mat</label>
+        <input type="number" id="mat" placeholder="Skriv inn utgifter til mat">
 
-      <h2 id="monthHeading">Inntekt</h2>
-      <input type="number" id="loenn" placeholder="Skriv inn din inntekt">
+        <label for="leie">Boutgifter</label>
+        <input type="number" id="leie" placeholder="Skriv inn boutgifter">
 
-      <h2>Utgifter</h2>
-      <label for="mat">Mat</label>
-      <input type="number" id="mat" placeholder="Matutgifter">
-      
-      <label for="leie">Boutgifter</label>
-      <input type="number" id="leie" placeholder="Boutgifter">
-      
-      <label for="strom">Strøm</label>
-      <input type="number" id="strom" placeholder="Strømregning">
-      
-      <label for="annet">Annet</label>
-      <input type="number" id="annet" placeholder="Andre utgifter">
+        <label for="strom">Strøm</label>
+        <input type="number" id="strom" placeholder="Skriv inn strømregning">
+
+        <label for="annet">Annet</label>
+        <input type="number" id="annet" placeholder="Skriv inn andre utgifter">
+      </div>
 
       <button id="lagreBtn">Lagre</button>
-
-      <canvas id="chartUtgifter"></canvas>
+    </div>
+    
+    <div class="right">
+      <canvas id="chartUtgifter" width="250" height="250"></canvas>
       <p id="gjenvTekst" class="gjenv-tekst"></p>
     </div>
+  </div>
 
-    <!-- Høyre container: Årsoversikt -->
-    <div class="year-chart-container">
-      <h3>Årsoversikt</h3>
-      <p id="totalGjenv" class="gjenv-tekst"></p>
-      <canvas id="yearChart"></canvas>
-    </div>
-
+  <!-- Årsoversikt-containeren med egen klasse: year-chart-container -->
+  <div class="container year-chart-container">
+    <h3>Årsoversikt</h3>
+    <p id="totalGjenv" class="gjenv-tekst"></p>
+    <canvas id="yearChart" width="800" height="400"></canvas>
   </div>
   
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Chart.js via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+
+  <!-- Din JS -->
   <script src="personlig.js"></script>
 
   <script>
+    // Kalles når siden lastes
     window.onload = function() {
       setDefaultMonth();
       oppdaterSkjema();
@@ -74,6 +82,7 @@
       oppdaterYearChart();
     };
 
+    // Ved klikk på "Lagre"
     document.getElementById("lagreBtn").addEventListener("click", () => {
       lagreData();
       oppdaterSkjema();
@@ -81,6 +90,7 @@
       oppdaterYearChart();
     });
 
+    // Hvis brukeren bytter måned i <select>, oppdater pai
     document.getElementById("monthSelect").addEventListener("change", () => {
       oppdaterSkjema();
       oppdaterDiagram();
@@ -88,11 +98,10 @@
 
     function setDefaultMonth() {
       const now = new Date();
-      const monthIndex = now.getMonth(); 
+      const monthIndex = now.getMonth(); // 0..11
       const monthKeys = ["jan","feb","mar","apr","mai","jun","jul","aug","sep","okt","nov","des"];
       document.getElementById("monthSelect").value = monthKeys[monthIndex];
     }
   </script>
-
 </body>
 </html>
